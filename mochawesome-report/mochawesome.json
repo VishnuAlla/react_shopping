@@ -1,0 +1,176 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 5,
+    "passes": 5,
+    "pending": 0,
+    "failures": 0,
+    "start": "2021-10-15T13:47:09.492Z",
+    "end": "2021-10-15T13:47:37.299Z",
+    "duration": 27807,
+    "testsRegistered": 5,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "a1883d53-09d9-4ec4-8af4-28645e304530",
+      "title": "",
+      "fullFile": "cypress/integration/examples/shoppingcart.spec.js",
+      "file": "cypress/integration/examples/shoppingcart.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "c8992194-3a00-4566-a639-fff05ad92346",
+          "title": "React Shopping Cart Test Suite",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Buy a Large size T-Shirt having a name Crazy Monkey",
+              "fullTitle": "React Shopping Cart Test Suite Buy a Large size T-Shirt having a name Crazy Monkey",
+              "timedOut": null,
+              "duration": 6540,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit(Cypress.env('url'));\ncy.wait(1000);\nlocators.getLargeSize().click({\n  force: true\n});\ncy.wait(3000);\nlocators.getShirtResults().should('have.length', 10);\nlocators.getShirtResults().each(($el, index, $list) => {\n  const shirtName = $el.find('p.shelf-item__title').text();\n  if (shirtName.includes('Crazy Monkey')) {\n    $el.find('.shelf-item__buy-btn').click();\n  }\n});\nlocators.getCartItems().should('have.length', 1);\nlocators.getCartItems().contains('Crazy Monkey');\nlocators.getBuyButton().click();",
+              "err": {},
+              "uuid": "4e923887-3fe5-427f-8179-535b18ebd1dd",
+              "parentUUID": "c8992194-3a00-4566-a639-fff05ad92346",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Sort the shirts by the price value",
+              "fullTitle": "React Shopping Cart Test Suite Sort the shirts by the price value",
+              "timedOut": null,
+              "duration": 1810,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit(Cypress.env('url'));\nlocators.getSelectDropDown().select('Lowest to highest');\ncy.wait(1000);\nlocators.getSelectDropDown().select('Highest to lowest');",
+              "err": {},
+              "uuid": "ef8b2e86-c3f5-4c86-90c5-cfe738db50c8",
+              "parentUUID": "c8992194-3a00-4566-a639-fff05ad92346",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Modify the cart items by add/delete",
+              "fullTitle": "React Shopping Cart Test Suite Modify the cart items by add/delete",
+              "timedOut": null,
+              "duration": 1967,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit(Cypress.env('url'));\ncy.wait(1000);\nlocators.getLargeSize().click({\n  force: true\n});\nlocators.getShirtResults().eq(0).contains('Add to cart').click();\nlocators.getCart().find('.change-product-button').contains('+').click();\nlocators.getCartItems().contains('2');\nlocators.getCart().find('.change-product-button').contains('-').click();\nlocators.getCartItems().contains('1');\nlocators.getCartItemsDeleteButton().click();\nlocators.getCart().should('have.text', 'Add some products in the cart :)');",
+              "err": {},
+              "uuid": "a0334041-34c3-4ab0-b929-786fdc718ca5",
+              "parentUUID": "c8992194-3a00-4566-a639-fff05ad92346",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Validate the cart subtotal based on the items added",
+              "fullTitle": "React Shopping Cart Test Suite Validate the cart subtotal based on the items added",
+              "timedOut": null,
+              "duration": 12181,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit(Cypress.env('url'));\ncy.wait(1000);\nlocators.getLargeSize().click({\n  force: true\n});\ncy.wait(2000);\nlocators.getShirtResults().eq(0).contains('Add to cart').click();\nlocators.getLargeSize().click({\n  force: true\n});\ncy.wait(2000);\nlocators.getSmallSize().click({\n  force: true\n});\ncy.wait(2000);\nlocators.getShirtResults().eq(0).contains('Add to cart').click();\nlocators.getSmallSize().click({\n  force: true\n});\ncy.wait(2000);\nlocators.getMediumSize().click({\n  force: true\n});\ncy.wait(2000);\nlocators.getShirtResults().eq(0).contains('Add to cart').click();\nlocators.getMediumSize().click({\n  force: true\n}); //Calculate the sum of the items \nvar totalPriceCalculated = 0;\ncy.get('.float-cart__shelf-container').find('.shelf-item').each(($el, index, $list) => {\n  const priceText = $el.find('.shelf-item__price').find('p').text();\n  var price = Number(priceText.replace(/^\\D+/g, ''));\n  totalPriceCalculated = totalPriceCalculated + price;\n}).then(function () {\n  cy.log(totalPriceCalculated);\n}); //Compare the calculated total with the displayed total  in the cart\ncy.get('.sub-price__val').then(function (element) {\n  const total_amount = element.text();\n  var total_amount_displayed = Number(total_amount.replace(/^\\D+/g, ''));\n  var finalSum = total_amount_displayed.toFixed(0);\n  expect(finalSum).to.equal(totalPriceCalculated.toFixed(0));\n});",
+              "err": {},
+              "uuid": "b7b41c6c-d8cb-464f-a330-3ee1f494c436",
+              "parentUUID": "c8992194-3a00-4566-a639-fff05ad92346",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Give Star on the github",
+              "fullTitle": "React Shopping Cart Test Suite Give Star on the github",
+              "timedOut": null,
+              "duration": 3362,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit(Cypress.env('url'));\ncy.wait(1000);\ncy.get('a').invoke('attr', 'href').then(href => {\n  cy.request(href);\n});",
+              "err": {},
+              "uuid": "c66eee5a-5983-4f47-aedd-392ab35a3db5",
+              "parentUUID": "c8992194-3a00-4566-a639-fff05ad92346",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "4e923887-3fe5-427f-8179-535b18ebd1dd",
+            "ef8b2e86-c3f5-4c86-90c5-cfe738db50c8",
+            "a0334041-34c3-4ab0-b929-786fdc718ca5",
+            "b7b41c6c-d8cb-464f-a330-3ee1f494c436",
+            "c66eee5a-5983-4f47-aedd-392ab35a3db5"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 25860,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "6.3.1"
+    },
+    "marge": {
+      "options": null,
+      "version": "5.2.0"
+    }
+  }
+}
